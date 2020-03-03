@@ -41,11 +41,6 @@ void ofApp::setup(){
    ofEnableSmoothing();
    ofEnableDepthTest();
     
-
-
-    //audio 
-    //song.load("1.mp3");
-
     fft = new float[256];
     for (int i = 0; i < 128; i++)
     {
@@ -178,9 +173,6 @@ void ofApp::keyPressed(int key){
 void ofApp::loadFile(ofFileDialogResult data){
 
     ofFile file (data.getPath());
-
-
-
     if(file.exists()){
         songs.clear();
         song.unloadSound();

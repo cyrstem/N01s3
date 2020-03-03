@@ -17,8 +17,6 @@ class ofApp : public ofBaseApp{
 		float time;
 		//sphere
 		ofSpherePrimitive sphere;
-		//limits
-		//ofBoxPrimitive box;
 		//cam
 		ofEasyCam cam;
 		ofFbo fbo;
@@ -28,13 +26,14 @@ class ofApp : public ofBaseApp{
 		bool dead;
 		//save vertices  // maybe not needed here 
 		vector<glm::vec3> vertices;
-		//Luz
-		ofLight ambient, point;
 		//shaders
+
+
+
+
+
 		//sound staff 
 		ofSoundPlayer song;
-		vector<ofSoundPlayer>songs;
-
 		float *fft;
 		float *soundSpectrum;
 		int bands;
