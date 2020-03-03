@@ -20,7 +20,8 @@ void ofApp::setup(){
     fbo.begin();
         ofClear(0);
     fbo.end();
-    //camera stafff
+
+    //------camera stafff
     glm::vec3 center = glm::vec3(0,0,0);
     cam.lookAt(center);
     cam.setDistance(1600);
