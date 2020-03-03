@@ -1,0 +1,13 @@
+#compiled sources#
+GPATH
+GRTAGS
+GTAGS
+#FOLDERS#
+.vscode/*
+obj/*
+
+#files#
+*.qbs
+*.mp4
+*.mp3
+*.png
