@@ -29,7 +29,8 @@ class ofApp : public ofBaseApp{
 		//shaders
 
 
-
+		//luz stafff
+		ofLight ambient ,point;
 
 
 		//sound staff 
@@ -38,5 +39,7 @@ class ofApp : public ofBaseApp{
 		float *soundSpectrum;
 		int bands;
 		float decay ;
+		//float bang*;
+		float* bang;
 
 };

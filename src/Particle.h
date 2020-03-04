@@ -5,7 +5,7 @@ class Particle{
     public:
     Particle(){
         pos = ofPoint(ofGetWindowWidth()/2,ofGetWindowHeight()/2);
-        vel = glm::vec3(ofRandom(-1,1),ofRandom(-1,1),ofRandom(-1,1));
+        vel = glm::vec3(ofRandom(-5,5),ofRandom(-5,5),ofRandom(-5,5));
         plane.set(15,15,6,6,OF_PRIMITIVE_TRIANGLES);
         age = 0;
         rotate =0;
@@ -34,12 +34,15 @@ class Particle{
        
          plane.setPosition(pos);
     
-         plane.drawVertices();
+        // plane.drawVertices();
+        plane.draw();
      
       
     
     }
 void reset(){
+    //missing process to fix something  if it get in trouble 
+
 }
 
 

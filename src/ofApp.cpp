@@ -24,7 +24,7 @@ void ofApp::setup(){
     //------camera stafff
     glm::vec3 center = glm::vec3(0,0,0);
     cam.lookAt(center);
-    cam.setDistance(1600);
+    cam.setDistance(1900);
 
 
 
@@ -32,10 +32,10 @@ void ofApp::setup(){
     sphere.set(700,12);
 
     ambient.setAmbientColor(ofFloatColor(ofColor::white));
-    ambient.setPosition(0,0,0);
+    //ambient.setPosition(0,500,500);
 
     time = ofGetElapsedTimeMillis();
-  //basig ambirement set
+    //basic ambient setup 0
    //ofEnableBlendMode(OF_BLENDMODE_ADD);
    ofEnableAntiAliasing();
    //ofEnableArbTex();
@@ -50,7 +50,7 @@ void ofApp::setup(){
     }
     
     bands = 128;
-           
+    //bang = 0.0;      
 
 }
 
@@ -58,24 +58,27 @@ void ofApp::setup(){
 void ofApp::update(){
 
 ofSoundUpdate();
-song.setVolume(0.5);
+song.setVolume(0.7);
 
 soundSpectrum = ofSoundGetSpectrum(bands);
 for (int i = 0; i < bands; i++)
 {
-    fft[i] *= 0.5;//decay 
+    fft[i] *= 0.8;//decay 
     if (fft[i] < soundSpectrum[i])
     {
         fft[i] = soundSpectrum[i];
+        //ofLog()<<fft[3];
+        
     }
-}
 
+}
 
 
     for (int i = 0; i < p.size(); i++)
     {
         p[i].update();
     }
+
     fbo.begin();
         ofClear(0);
     fbo.end();
@@ -86,9 +89,9 @@ void ofApp::scene(){
     for (int i = 0; i < vertices.size(); i++)
     {
         glm::vec3 v = vertices[i];
-        if(ofGetFrameNum() % 70  ==0){
+        if(ofGetFrameNum()% 70  ==0){
             Particle pTemp;
-            pTemp.pos = v +ofPoint(0,0,0);
+            pTemp.pos = v + ofPoint(0,0,0);
             pTemp.rotate += ofRandom(0,180);
             p.push_back(pTemp);
         }
@@ -96,6 +99,7 @@ void ofApp::scene(){
    
     fbo.begin();
         cam.begin();
+        ambient.enable();
 
              for (int i = 0; i < p.size(); i++)
         {   
@@ -134,8 +138,6 @@ void ofApp::scene(){
 void ofApp::draw(){
     scene();
     fbo.draw(0,0);
-
-   
 }
 
 //--------------------------------------------------------------
@@ -147,7 +149,14 @@ void ofApp::keyPressed(int key){
     
     if (key =='p')
     {
-        song.play();
+        
+        if (song.isLoaded() ==false)
+        {
+            ofLog()<<"Load something first ";
+        }else{
+            song.play();
+        }
+        
     }
         if (key =='0')
     {
@@ -175,10 +184,14 @@ void ofApp::loadFile(ofFileDialogResult data){
 
     ofFile file (data.getPath());
     if(file.exists()){
-        songs.clear();
         song.unloadSound();
         ofLog()<<file.getAbsolutePath();
         song.load(file);
+    }
+    if(song.isLoaded()){
+        song.play();
+    }else{
+        ofLog()<<"at least load a file ";
     }
 
 }
