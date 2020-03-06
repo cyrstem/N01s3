@@ -2,6 +2,8 @@
 
 #include "ofMain.h"
 #include "Particle.h"
+#include "Button.h"
+
 
 class ofApp : public ofBaseApp{
 
@@ -11,7 +13,9 @@ class ofApp : public ofBaseApp{
 		void scene();
 		void draw();
 		void loadFile(ofFileDialogResult data);
+		void onMouseInButton(ofVec2f& e);
 		void keyPressed(int key);
+
 
 		//send time
 		float time;
@@ -19,6 +23,7 @@ class ofApp : public ofBaseApp{
 		ofSpherePrimitive sphere;
 		//cam
 		ofEasyCam cam;
+		//ofCamera cam;
 		ofFbo fbo;
 		
 		//particle  call  should improve  later;
@@ -41,5 +46,8 @@ class ofApp : public ofBaseApp{
 		float decay ;
 		//float bang*;
 		float* bang;
+		Button bnt;
+		bool state;
+
 
 };

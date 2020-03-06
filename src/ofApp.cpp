@@ -4,7 +4,7 @@
 void ofApp::setup(){
     ofSetBackgroundColor(15);
     ofSetVerticalSync(true);
-
+    state = false;
 
     //FBOS
     ofFboSettings s;
@@ -50,7 +50,9 @@ void ofApp::setup(){
     }
     
     bands = 128;
-    //bang = 0.0;      
+    bnt.setup(100,ofGetWidth()/2,ofGetHeight()-35,ofColor::red);
+      ofAddListener(bnt.clickedInside, this, &ofApp::onMouseInButton);
+    
 
 }
 
@@ -61,17 +63,17 @@ ofSoundUpdate();
 song.setVolume(0.7);
 
 soundSpectrum = ofSoundGetSpectrum(bands);
-for (int i = 0; i < bands; i++)
-{
-    fft[i] *= 0.8;//decay 
-    if (fft[i] < soundSpectrum[i])
+    for (int i = 0; i < bands; i++)
     {
-        fft[i] = soundSpectrum[i];
-        //ofLog()<<fft[3];
-        
-    }
+        fft[i] *= 0.8;//decay 
+        if (fft[i] < soundSpectrum[i])
+        {
+            fft[i] = soundSpectrum[i];
+            //ofLog()<<fft[3];
+            
+        }
 
-}
+    }
 
 
     for (int i = 0; i < p.size(); i++)
@@ -112,8 +114,6 @@ void ofApp::scene(){
             }
          
         }
-
-
         cam.end();
 
 
@@ -123,7 +123,7 @@ void ofApp::scene(){
        {
             for (int i = 0; i < bands; i++)
             {
-            ofDrawRectangle(0,10 + i* 20,fft[i]* 1000,10);
+                ofDrawRectangle(0,10 + i* 20,fft[i]* 1000,10);
             }
        }
        
@@ -136,8 +136,21 @@ void ofApp::scene(){
 }
 //--------------------------------------------------------------
 void ofApp::draw(){
-    scene();
-    fbo.draw(0,0);
+   scene();
+    bnt.draw();
+   fbo.draw(0,0);
+  
+    if (state ==true)
+    {
+        ofDrawBitmapString("Song loaded",ofGetWidth()-150,ofGetHeight()-20);
+    }
+    else
+    {
+        ofDrawBitmapString(" 0:0 ",ofGetWidth()-150,ofGetHeight()-20);
+    }
+    
+    
+
 }
 
 //--------------------------------------------------------------
@@ -153,6 +166,8 @@ void ofApp::keyPressed(int key){
         if (song.isLoaded() ==false)
         {
             ofLog()<<"Load something first ";
+            state = true;
+            
         }else{
             song.play();
         }
@@ -168,10 +183,12 @@ void ofApp::keyPressed(int key){
         if (music.bSuccess)
         {   
              ofLog()<<"file selected";
+             state = true;
             loadFile(music);
         }else
         {
             ofLog()<<"file not selected";
+            state= false;
         }
         
         
@@ -189,10 +206,28 @@ void ofApp::loadFile(ofFileDialogResult data){
         song.load(file);
     }
     if(song.isLoaded()){
+        state = true;
         song.play();
     }else{
         ofLog()<<"at least load a file ";
+        state = false;
     }
 
 }
 //--------------------------------------------------------------
+void ofApp::onMouseInButton(ofVec2f & e){
+
+cout << "botton pendejo" << endl;
+
+ ofFileDialogResult music = ofSystemLoadDialog("load a song");
+        if (music.bSuccess)
+        {   
+             ofLog()<<"file selected";
+            loadFile(music);
+        }else
+        {
+            ofLog()<<"file not selected";
+        }
+
+
+}

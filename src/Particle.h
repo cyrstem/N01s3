@@ -40,10 +40,10 @@ class Particle{
       
     
     }
-void reset(){
-    //missing process to fix something  if it get in trouble 
+    void reset(){
+        //missing process to fix something  if it get in trouble 
 
-}
+    }
 
 
 glm::vec3 vel;
