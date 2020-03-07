@@ -142,7 +142,7 @@ void ofApp::draw(){
   
     if (state ==true)
     {
-        ofDrawBitmapString("Song loaded",ofGetWidth()-150,ofGetHeight()-20);
+        ofDrawBitmapString("loaded :"+ofToString(song.getPositionMS()),ofGetWidth()-150,ofGetHeight()-20);
     }
     else
     {

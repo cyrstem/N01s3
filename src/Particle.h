@@ -32,9 +32,9 @@ class Particle{
       
         ofRotateZ(rotate);  
        
-         plane.setPosition(pos);
+         //plane.setPosition(pos);
     
-        // plane.drawVertices();
+        //plane.drawVertices();
         plane.draw();
      
       
@@ -45,13 +45,12 @@ class Particle{
 
     }
 
-
-glm::vec3 vel;
-ofPoint pos;
-ofPlanePrimitive plane;
-int age;
-float rotate;
-float alpha;
-bool dead;
+    glm::vec3 vel;
+    ofPoint pos;
+    ofPlanePrimitive plane;
+    int age;
+    float rotate;
+    float alpha;
+    bool dead;
 
 };
