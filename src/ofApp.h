@@ -15,7 +15,9 @@ class ofApp : public ofBaseApp{
 		void loadFile(ofFileDialogResult data);
 		void onMouseInButton(ofVec2f& e);
 		void keyPressed(int key);
+		void drawCorner(ofPoint p);
 
+		ofTrueTypeFont font;
 
 		//send time
 		float time;
@@ -42,10 +44,13 @@ class ofApp : public ofBaseApp{
 		ofSoundPlayer song;
 		float *fft;
 		float *soundSpectrum;
+
 		int bands;
 		float decay ;
 		//float bang*;
 		float* bang;
+
+		//buton late
 		Button bnt;
 		bool state;
 

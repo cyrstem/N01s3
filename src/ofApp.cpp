@@ -103,6 +103,28 @@ void ofApp::scene(){
         cam.begin();
         ambient.enable();
 
+        //here goes the markers 
+
+for (int x = -1  ; x <= 1; x+=2)
+   {
+       for (int y = -1; y <=1; y+=2)
+       {
+           for (int z = -1; z < 1; z+=2)
+           {
+               ofPushStyle();
+               ofSetColor(ofColor::red);
+               drawCorner(ofPoint(x*(1500/2+10),y*(1500/2+10),z*(10+10)));
+               ofPopStyle();
+           }
+           
+       }
+       
+   }
+
+
+
+
+
              for (int i = 0; i < p.size(); i++)
         {   
 
@@ -114,8 +136,16 @@ void ofApp::scene(){
             }
          
         }
+    
+
+
+
+
+
+
         cam.end();
 
+//helper for the  audio bands
 
       ofPushStyle();
        ofSetColor(ofColor::red);
@@ -123,7 +153,7 @@ void ofApp::scene(){
        {
             for (int i = 0; i < bands; i++)
             {
-                ofDrawRectangle(0,10 + i* 20,fft[i]* 1000,10);
+                ofDrawRectangle(0,10 + i* 20,fft[0]* 1000,10);
             }
        }
        
@@ -131,6 +161,10 @@ void ofApp::scene(){
        
        
         ofPopStyle();
+
+//ofSetColor(ofColor::white);  
+  
+        
     fbo.end();
 
 }
@@ -230,4 +264,11 @@ cout << "botton pendejo" << endl;
         }
 
 
+}
+
+void ofApp::drawCorner(ofPoint p){
+    float pl = 100.0;
+    ofDrawLine(p.x,p.y,p.z,p.x,p.y,p.z -sin(p.z)*pl);
+    ofDrawLine(p.x,p.y,p.z,p.x,p.y-sin(p.z)*pl,p.z);
+    ofDrawLine(p.x,p.y,p.z,p.x-sin(p.z)*pl,p.y,p.z);
 }

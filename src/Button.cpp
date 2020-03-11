@@ -2,7 +2,8 @@
 
 Button::Button() {
 	bRegisteredEvents = false;
-    font.load("font.ttf",13,true,false);
+ 
+    
 }
 
 Button::~Button(){
@@ -14,7 +15,7 @@ void Button::setup(int radius, int x, int y, ofColor color) {
     this->x = x;
     this->y = y;
     this->color = color;
-
+ 
 
 
     if (!bRegisteredEvents) {
@@ -30,10 +31,19 @@ void Button::draw() {
 
     ofPushStyle();
         ofSetRectMode(OF_RECTMODE_CENTER);
-        ofSetColor(color);
-        font.drawString(" File ",x-35,y+10);
+        ofSetColor(ofColor::black);
+        ofNoFill();
+        ofDrawBitmapString(" SONG ",x-35,y+10);
+           //font.drawString(" SONG ",x-35,y+10);
+     ofPopStyle();
+
+
+    ofPushMatrix();
+    ofPushStyle();
+     ofSetColor(ofColor::red);
+     ofDrawRectangle(x-35,y-10,50,30);
     ofPopStyle();
-   
+    ofPopMatrix();
    
 }
 

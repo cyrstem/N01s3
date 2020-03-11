@@ -8,7 +8,6 @@ class Button
         Button();
         ~Button();
         ofEvent<ofVec2f> clickedInside;
-        ofTrueTypeFont font;
 
     void setup(int radius, int x, int y, ofColor color);
     void draw();

@@ -32,7 +32,7 @@ class Particle{
       
         ofRotateZ(rotate);  
        
-         //plane.setPosition(pos);
+         plane.setPosition(pos);
     
         //plane.drawVertices();
         plane.draw();
