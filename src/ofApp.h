@@ -45,6 +45,9 @@ class ofApp : public ofBaseApp{
 		float *fft;
 		float *soundSpectrum;
 
+		vector<float>lfh;
+		void findMax();
+
 		int bands;
 		float decay ;
 		//float bang*;

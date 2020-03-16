@@ -72,6 +72,11 @@ soundSpectrum = ofSoundGetSpectrum(bands);
             //ofLog()<<fft[3];
             
         }
+        if (i==0)    
+        {
+            lfh.push_back(fft[i]*450 +100);
+        }
+        
 
     }
 
@@ -163,6 +168,7 @@ for (int x = -1  ; x <= 1; x+=2)
         ofPopStyle();
 
 //ofSetColor(ofColor::white);  
+
   
         
     fbo.end();
@@ -172,15 +178,17 @@ for (int x = -1  ; x <= 1; x+=2)
 void ofApp::draw(){
    scene();
     bnt.draw();
+
+        findMax();
    fbo.draw(0,0);
   
     if (state ==true)
     {
-        ofDrawBitmapString("loaded :"+ofToString(song.getPositionMS()),ofGetWidth()-150,ofGetHeight()-20);
+        ofDrawBitmapString(ofToString(song.getPositionMS()),ofGetWidth()-65,ofGetHeight()-20);
     }
     else
     {
-        ofDrawBitmapString(" 0:0 ",ofGetWidth()-150,ofGetHeight()-20);
+        ofDrawBitmapString(" 0:0 ",ofGetWidth()-65,ofGetHeight()-20);
     }
     
     
@@ -265,6 +273,23 @@ cout << "botton pendejo" << endl;
 
 
 }
+
+void ofApp::findMax(){
+    float max;
+
+    max = lfh[0];
+    for (int i = 0; i < lfh.size() -1; i++)
+    {
+        if (lfh[i + 1]>lfh[i])
+        {
+            max = lfh[i + 1];
+        }
+        
+    }
+    ofDrawBitmapString(ofToString(max),ofGetWindowWidth()-65,50);
+    
+}
+
 
 void ofApp::drawCorner(ofPoint p){
     float pl = 100.0;
