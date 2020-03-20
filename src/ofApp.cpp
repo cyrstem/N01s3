@@ -50,6 +50,11 @@ void ofApp::setup(){
     }
     
     bands = 128;
+    //values for  particulss XYZ
+    fX = 0.0;
+    fY = 0.0;
+    fZ = 0.0;
+    //
     bnt.setup(100,ofGetWidth()/2,ofGetHeight()-35,ofColor::red);
       ofAddListener(bnt.clickedInside, this, &ofApp::onMouseInButton);
     
@@ -65,41 +70,55 @@ song.setVolume(0.7);
 soundSpectrum = ofSoundGetSpectrum(bands);
     for (int i = 0; i < bands; i++)
     {
-        fft[i] *= 0.8;//decay 
+        fft[i] *= 0.4f;//decay 
         if (fft[i] < soundSpectrum[i])
         {
             fft[i] = soundSpectrum[i];
-            //ofLog()<<fft[3];
             
         }
+
+
+
         if (i==0)    
         {
-            lfh.push_back(fft[i]*450 +100);
+             lfh.push_back(soundSpectrum[i]);
+            
         }
-        
-
+   
+        fftchosen = (fft[3]*100);
     }
 
 
     for (int i = 0; i < p.size(); i++)
-    {
-        p[i].update();
-    }
+        {
+            p[i].update();
+        }
 
     fbo.begin();
         ofClear(0);
     fbo.end();
 }
+
 //--------------------------------------------------------------
 void ofApp::scene(){
      vertices = sphere.getMesh().getVertices();
+
+     // this part is for controling born rate of the particle  still neeed  to work 
+    // it seems  to  work but not  for the aplication  as i  first imagine 
+    
+     glm::vec3 force(ofRandom(-5.0,5.0),ofRandom(-5.1,5.0),ofRandom(-5.1,5.1));
+   // glm::vec3 force(fX,fY,fZ);
+    int born = ofMap(fftchosen,20,110,30,80);
+    //cout<<born<<endl;
+
     for (int i = 0; i < vertices.size(); i++)
     {
         glm::vec3 v = vertices[i];
-        if(ofGetFrameNum()% 70  ==0){
+        if(ofGetFrameNum() % 60  == born){
             Particle pTemp;
             pTemp.pos = v + ofPoint(0,0,0);
             pTemp.rotate += ofRandom(0,180);
+            pTemp.applyForce(force);
             p.push_back(pTemp);
         }
     }
@@ -158,7 +177,7 @@ for (int x = -1  ; x <= 1; x+=2)
        {
             for (int i = 0; i < bands; i++)
             {
-                ofDrawRectangle(0,10 + i* 20,fft[0]* 1000,10);
+                ofDrawRectangle(0,10 + i* 20,fft[i]* 1000,10);
             }
        }
        
@@ -169,7 +188,6 @@ for (int x = -1  ; x <= 1; x+=2)
 
 //ofSetColor(ofColor::white);  
 
-  
         
     fbo.end();
 
@@ -273,24 +291,42 @@ cout << "botton pendejo" << endl;
 
 
 }
-
+//--------------------------------------------------------------
 void ofApp::findMax(){
-    float max;
 
-    max = lfh[0];
-    for (int i = 0; i < lfh.size() -1; i++)
-    {
-        if (lfh[i + 1]>lfh[i])
-        {
-            max = lfh[i + 1];
-        }
+
+    //this might be  useful some time later 
+    // float max;
+    // max = lfh[0];
+    // for (int i = 0; i < lfh.size() -1; i++)
+    // {
+    //     if (lfh[i + 1]>lfh[i])
+    //     {
+    //         max = lfh[i + 1];
+    //     }
         
-    }
-    ofDrawBitmapString(ofToString(max),ofGetWindowWidth()-65,50);
-    
+    // }
+    // ofDrawBitmapString(ofToString(max),ofGetWindowWidth()-65,50);
+
+
+    auto it = max_element(std::begin(lfh),std::end(lfh));
+    auto it2 = min_element(std::begin(lfh),std::end(lfh));
+
+
+    // cout<<*it<<endl;
+    // cout<<*it2<<endl;
+    float a =*it; 
+    float b =*it2; 
+    float incre = 1.3;
+    fX = a;
+    fY = b;
+    fZ = ofLerp(a,b,incre);
+
+
+
 }
 
-
+//--------------------------------------------------------------
 void ofApp::drawCorner(ofPoint p){
     float pl = 100.0;
     ofDrawLine(p.x,p.y,p.z,p.x,p.y,p.z -sin(p.z)*pl);

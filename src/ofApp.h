@@ -4,7 +4,6 @@
 #include "Particle.h"
 #include "Button.h"
 
-
 class ofApp : public ofBaseApp{
 
 	public:
@@ -44,6 +43,7 @@ class ofApp : public ofBaseApp{
 		ofSoundPlayer song;
 		float *fft;
 		float *soundSpectrum;
+		float  fftchosen;
 
 		vector<float>lfh;
 		void findMax();
@@ -56,6 +56,7 @@ class ofApp : public ofBaseApp{
 		//buton late
 		Button bnt;
 		bool state;
+		float fX,fY,fZ;
 
 
 };

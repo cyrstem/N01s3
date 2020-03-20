@@ -10,5 +10,9 @@
 			"path": "${workspaceRoot}/../../../../libs/openFrameworks"
 		}
 	],
-	"settings": {}
+	"settings": {
+		"files.associations": {
+			"iostream": "cpp"
+		}
+	}
 }
