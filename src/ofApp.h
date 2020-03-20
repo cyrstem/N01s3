@@ -36,8 +36,8 @@ class ofApp : public ofBaseApp{
 
 
 		//luz stafff
-		ofLight ambient ,point;
-
+		ofLight ambient ,areaLight ,spot;
+		ofMaterial material;
 
 		//sound staff 
 		ofSoundPlayer song;

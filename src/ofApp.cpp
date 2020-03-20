@@ -25,14 +25,39 @@ void ofApp::setup(){
     glm::vec3 center = glm::vec3(0,0,0);
     cam.lookAt(center);
     cam.setDistance(1900);
+    //cam.setFarClip(2000);
 
-
-
-    
     sphere.set(700,12);
+    //lights
+    ambient.setAmbientColor(ofFloatColor(ofColor::whiteSmoke));
+    ambient.setPosition(0,0,0);
+    ambient.setScale(20);
 
-    ambient.setAmbientColor(ofFloatColor(ofColor::white));
-    //ambient.setPosition(0,500,500);
+    spot.setPointLight();
+    spot.setPosition(0,0,100);
+    spot.setSpecularColor(ofFloatColor(255,0,0,0));
+    spot.enable();
+
+
+
+    areaLight.setup();
+    areaLight.enable();
+    areaLight.setAreaLight(1500,1500);
+    areaLight.setAmbientColor(ofFloatColor(1.0,0.1,0.1));
+    areaLight.setAttenuation(1.0,1.0001,0.0001);
+    areaLight.setDiffuseColor(ofFloatColor(1,1,1));
+    areaLight.setSpecularColor(ofFloatColor(1,1,1));
+    areaLight.rotateDeg(0,glm::vec3(1,0,0));
+    areaLight.rotateDeg(0,glm::vec3(0,1,0));
+    areaLight.setPosition(0,10,-100);
+
+
+    material.setAmbientColor(ofFloatColor(0.1,0.1,0.1,1.0));
+	material.setDiffuseColor(ofFloatColor(0.8,0.8,0.8,1.0));
+	material.setSpecularColor(ofFloatColor(0.8,0.8,0.8,1.0));
+	material.setShininess(10);
+
+
 
     time = ofGetElapsedTimeMillis();
     //basic ambient setup 0
@@ -105,7 +130,7 @@ void ofApp::scene(){
 
      // this part is for controling born rate of the particle  still neeed  to work 
     // it seems  to  work but not  for the aplication  as i  first imagine 
-    
+
      glm::vec3 force(ofRandom(-5.0,5.0),ofRandom(-5.1,5.0),ofRandom(-5.1,5.1));
    // glm::vec3 force(fX,fY,fZ);
     int born = ofMap(fftchosen,20,110,30,80);
@@ -126,6 +151,7 @@ void ofApp::scene(){
     fbo.begin();
         cam.begin();
         ambient.enable();
+
 
         //here goes the markers 
 
@@ -151,9 +177,9 @@ for (int x = -1  ; x <= 1; x+=2)
 
              for (int i = 0; i < p.size(); i++)
         {   
-
+             material.begin();  
              p[i].draw();
-
+             material.end();
             if ( p[i].dead == true)
             {
                 p.erase(p.begin()); 
@@ -163,8 +189,9 @@ for (int x = -1  ; x <= 1; x+=2)
     
 
 
-
-
+   // areaLight.draw();
+   // ambient.draw();
+   //spot.draw();
 
 
         cam.end();
