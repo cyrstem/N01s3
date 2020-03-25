@@ -50,7 +50,7 @@ class Particle{
          if(alpha == 0){
             dead = true;
          }
-         // rotate -= 0.05;
+         rotate += ofRandomf();
 
     }
 
@@ -64,6 +64,7 @@ class Particle{
          plane.setPosition(pos);
     
        plane.draw();
+
        ofNoFill();
        ofBeginShape();
        for (ofPoint& log :this->logs)

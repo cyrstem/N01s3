@@ -8,6 +8,7 @@ class ofApp : public ofBaseApp{
 
 	public:
 		void setup();
+		void calculateRms();
 		void update();
 		void scene();
 		void draw();
@@ -25,6 +26,7 @@ class ofApp : public ofBaseApp{
 		//cam
 		ofEasyCam cam;
 		//ofCamera cam;
+		glm::vec3 centro;
 		ofFbo fbo;
 		
 		//particle  call  should improve  later;
@@ -41,22 +43,18 @@ class ofApp : public ofBaseApp{
 
 		//sound staff 
 		ofSoundPlayer song;
+		float volume;
 		float *fft;
 		float *soundSpectrum;
-		float  fftchosen;
-
-		vector<float>lfh;
-		void findMax();
 
 		int bands;
 		float decay ;
-		//float bang*;
-		float* bang;
+		static constexpr size_t nBandsToGet = 128;
 
+		std::array<float,nBandsToGet> fftSmoothed{{0}};
 		//buton late
 		Button bnt;
 		bool state;
-		float fX,fY,fZ;
-
+	
 
 };

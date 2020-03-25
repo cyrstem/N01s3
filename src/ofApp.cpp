@@ -22,10 +22,10 @@ void ofApp::setup(){
     fbo.end();
 
     //------camera stafff
-    glm::vec3 center = glm::vec3(0,0,0);
-    cam.lookAt(center);
-    cam.setDistance(1900);
-    //cam.setFarClip(2000);
+    centro = glm::vec3(0,0,0);
+    cam.lookAt(centro);
+    cam.setPosition(glm::vec3(0,0,2200));
+
 
     sphere.set(700,12);
     //lights
@@ -35,7 +35,10 @@ void ofApp::setup(){
 
     spot.setPointLight();
     spot.setPosition(0,0,100);
-    spot.setSpecularColor(ofFloatColor(255,0,0,0));
+    spot.setDiffuseColor(ofFloatColor(255,255,122));
+    spot.setSpecularColor(ofFloatColor(255,255,155));
+    spot.setSpotConcentration(45);
+    spot.setSpotlightCutOff(50);
     spot.enable();
 
 
@@ -46,10 +49,10 @@ void ofApp::setup(){
     areaLight.setAmbientColor(ofFloatColor(1.0,0.1,0.1));
     areaLight.setAttenuation(1.0,1.0001,0.0001);
     areaLight.setDiffuseColor(ofFloatColor(1,1,1));
-    areaLight.setSpecularColor(ofFloatColor(1,1,1));
+    areaLight.setSpecularColor(ofFloatColor(1,0,1));
     areaLight.rotateDeg(0,glm::vec3(1,0,0));
-    areaLight.rotateDeg(0,glm::vec3(0,1,0));
-    areaLight.setPosition(0,10,-100);
+    areaLight.rotateDeg(-45,glm::vec3(1,0,0));
+    areaLight.setPosition(0,150,-100);
 
 
     material.setAmbientColor(ofFloatColor(0.1,0.1,0.1,1.0));
@@ -61,25 +64,23 @@ void ofApp::setup(){
 
     time = ofGetElapsedTimeMillis();
     //basic ambient setup 0
-   //ofEnableBlendMode(OF_BLENDMODE_ADD);
+   ///ofEnableBlendMode(OF_BLENDMODE_ADD);
    ofEnableAntiAliasing();
    //ofEnableArbTex();
    ofEnableSmoothing();
    ofEnableDepthTest();
+   volume = 1.0;
+  
     
     fft = new float[256];
     for (int i = 0; i < 128; i++)
     {
-        fft[i] =0.5;
+        fft[i] =0.6;
 
     }
     
     bands = 128;
-    //values for  particulss XYZ
-    fX = 0.0;
-    fY = 0.0;
-    fZ = 0.0;
-    //
+    
     bnt.setup(100,ofGetWidth()/2,ofGetHeight()-35,ofColor::red);
       ofAddListener(bnt.clickedInside, this, &ofApp::onMouseInButton);
     
@@ -87,31 +88,46 @@ void ofApp::setup(){
 }
 
 //--------------------------------------------------------------
+void ofApp::calculateRms(){
+    // float rms = 0.0;
+    // int numCounted = 0;
+    // for (int i = 0; i <256; i++)
+    // {
+    //     float leftSample = input[i*2] *0.5;
+    //     float rightSample = input[i*2]*0.5;
+    //     rms += leftSample *leftSample;
+    //     rms += rightSample *rightSample;
+    //     numCounted +=2;
+
+    // }
+    // rms/=(float)numCounted;
+    // rms =sqrt(rms);
+}
+
+//--------------------------------------------------------------
 void ofApp::update(){
 
+float  *val = ofSoundGetSpectrum(nBandsToGet);
+for (int i = 0; i < nBandsToGet; i++)
+{
+    fftSmoothed[i] *= 0.96f;
+    if (fftSmoothed[i] <val [i]) fftSmoothed[i] =val[i];
+    
+}
+
 ofSoundUpdate();
-song.setVolume(0.7);
+song.setVolume(volume);
 
-soundSpectrum = ofSoundGetSpectrum(bands);
-    for (int i = 0; i < bands; i++)
-    {
-        fft[i] *= 0.4f;//decay 
-        if (fft[i] < soundSpectrum[i])
-        {
-            fft[i] = soundSpectrum[i];
-            
-        }
+// soundSpectrum = ofSoundGetSpectrum(bands);
+//     for (int i = 0; i < bands; i++)
+//     {
+//         fft[i] *= 0.5f;//decay 
+//         if (fft[i] < soundSpectrum[i])
+//         {
+//             fft[i] = soundSpectrum[i]; 
+//         }
 
-
-
-        if (i==0)    
-        {
-             lfh.push_back(soundSpectrum[i]);
-            
-        }
-   
-        fftchosen = (fft[3]*100);
-    }
+//     }
 
 
     for (int i = 0; i < p.size(); i++)
@@ -131,15 +147,15 @@ void ofApp::scene(){
      // this part is for controling born rate of the particle  still neeed  to work 
     // it seems  to  work but not  for the aplication  as i  first imagine 
 
-     glm::vec3 force(ofRandom(-5.0,5.0),ofRandom(-5.1,5.0),ofRandom(-5.1,5.1));
-   // glm::vec3 force(fX,fY,fZ);
-    int born = ofMap(fftchosen,20,110,30,80);
-    //cout<<born<<endl;
+      glm::vec3 force(ofRandom(-5.0,5.0),ofRandom(-5.1,5.0),ofRandom(-5.1,5.1));
+
+    // int born = ofMap(fftchosen,20,110,30,80);
+
 
     for (int i = 0; i < vertices.size(); i++)
     {
         glm::vec3 v = vertices[i];
-        if(ofGetFrameNum() % 60  == born){
+        if(ofGetFrameNum() % 60  == 0){
             Particle pTemp;
             pTemp.pos = v + ofPoint(0,0,0);
             pTemp.rotate += ofRandom(0,180);
@@ -175,7 +191,7 @@ for (int x = -1  ; x <= 1; x+=2)
 
 
 
-             for (int i = 0; i < p.size(); i++)
+    for (int i = 0; i < p.size(); i++)
         {   
              material.begin();  
              p[i].draw();
@@ -189,33 +205,35 @@ for (int x = -1  ; x <= 1; x+=2)
     
 
 
-   // areaLight.draw();
-   // ambient.draw();
-   //spot.draw();
+   //areaLight.draw();
+   //ambient.draw();
+  // spot.draw();
 
 
         cam.end();
 
 //helper for the  audio bands
 
-      ofPushStyle();
+    ofPushStyle();
        ofSetColor(ofColor::red);
-       for (int j= 0; j < bands; j++)
-       {
-            for (int i = 0; i < bands; i++)
-            {
-                ofDrawRectangle(0,10 + i* 20,fft[i]* 1000,10);
-            }
-       }
-       
-      
-       
-       
-        ofPopStyle();
-
-//ofSetColor(ofColor::white);  
-
+       ofFill();
+        float width = (float)(5*128)/nBandsToGet;
+        for (int i = 0; i < nBandsToGet; i++)
+        {
+            ofDrawRectangle(65+i*width,ofGetHeight()-20,width,-(fftSmoothed[i]* 200));
+        }
         
+
+    //    for (int j= 0; j < bands; j++)
+    //    {
+    //         for (int i = 0; i < bands; i++)
+    //         {
+    //             ofDrawRectangle(0,10 + i* 20,fft[i]* 1000,10);
+    //         }
+    //    }   
+     ofPopStyle();
+
+       
     fbo.end();
 
 }
@@ -223,17 +241,16 @@ for (int x = -1  ; x <= 1; x+=2)
 void ofApp::draw(){
    scene();
     bnt.draw();
-
-        findMax();
+        //findMax();
    fbo.draw(0,0);
   
     if (state ==true)
     {
-        ofDrawBitmapString(ofToString(song.getPositionMS()),ofGetWidth()-65,ofGetHeight()-20);
+        ofDrawBitmapString(ofToString(volume),ofGetWidth()-65,ofGetHeight()-20);
     }
     else
     {
-        ofDrawBitmapString(" 0:0 ",ofGetWidth()-65,ofGetHeight()-20);
+        ofDrawBitmapString("volume "+ofToString(volume),ofGetWidth()-95,ofGetHeight()-20);
     }
     
     
@@ -246,6 +263,15 @@ void ofApp::keyPressed(int key){
     {
         ofToggleFullscreen();
     }
+    if (key == OF_KEY_UP)
+    {
+       volume++;
+    }
+    if (key == OF_KEY_DOWN)
+    {
+       volume--;
+    }
+
     
     if (key =='p')
     {
@@ -318,40 +344,7 @@ cout << "botton pendejo" << endl;
 
 
 }
-//--------------------------------------------------------------
-void ofApp::findMax(){
 
-
-    //this might be  useful some time later 
-    // float max;
-    // max = lfh[0];
-    // for (int i = 0; i < lfh.size() -1; i++)
-    // {
-    //     if (lfh[i + 1]>lfh[i])
-    //     {
-    //         max = lfh[i + 1];
-    //     }
-        
-    // }
-    // ofDrawBitmapString(ofToString(max),ofGetWindowWidth()-65,50);
-
-
-    auto it = max_element(std::begin(lfh),std::end(lfh));
-    auto it2 = min_element(std::begin(lfh),std::end(lfh));
-
-
-    // cout<<*it<<endl;
-    // cout<<*it2<<endl;
-    float a =*it; 
-    float b =*it2; 
-    float incre = 1.3;
-    fX = a;
-    fY = b;
-    fZ = ofLerp(a,b,incre);
-
-
-
-}
 
 //--------------------------------------------------------------
 void ofApp::drawCorner(ofPoint p){
