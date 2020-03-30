@@ -4,7 +4,7 @@
 void ofApp::setup(){
     ofSetBackgroundColor(15);
     ofSetVerticalSync(true);
-    state = false;
+    ui.set();
 
     //FBOS
     ofFboSettings s;
@@ -69,65 +69,29 @@ void ofApp::setup(){
    //ofEnableArbTex();
    ofEnableSmoothing();
    ofEnableDepthTest();
-   volume = 1.0;
-  
-    
-    fft = new float[256];
-    for (int i = 0; i < 128; i++)
-    {
-        fft[i] =0.6;
-
-    }
-    
-    bands = 128;
-    
-    bnt.setup(100,ofGetWidth()/2,ofGetHeight()-35,ofColor::red);
-      ofAddListener(bnt.clickedInside, this, &ofApp::onMouseInButton);
-    
 
 }
-
 //--------------------------------------------------------------
-void ofApp::calculateRms(){
-    // float rms = 0.0;
-    // int numCounted = 0;
-    // for (int i = 0; i <256; i++)
-    // {
-    //     float leftSample = input[i*2] *0.5;
-    //     float rightSample = input[i*2]*0.5;
-    //     rms += leftSample *leftSample;
-    //     rms += rightSample *rightSample;
-    //     numCounted +=2;
+void ofApp::env(){
+    float radio = 200;
+    int total = 20;
+    float rot = 0;
 
-    // }
-    // rms/=(float)numCounted;
-    // rms =sqrt(rms);
+    float animateZpos= -1;
+
+    mesh.setMode(OF_PRIMITIVE_TRIANGLES);
+
+
+
+
 }
-
 //--------------------------------------------------------------
 void ofApp::update(){
 
-float  *val = ofSoundGetSpectrum(nBandsToGet);
-for (int i = 0; i < nBandsToGet; i++)
-{
-    fftSmoothed[i] *= 0.96f;
-    if (fftSmoothed[i] <val [i]) fftSmoothed[i] =val[i];
-    
-}
+ui.set();
 
 ofSoundUpdate();
-song.setVolume(volume);
-
-// soundSpectrum = ofSoundGetSpectrum(bands);
-//     for (int i = 0; i < bands; i++)
-//     {
-//         fft[i] *= 0.5f;//decay 
-//         if (fft[i] < soundSpectrum[i])
-//         {
-//             fft[i] = soundSpectrum[i]; 
-//         }
-
-//     }
+song.setVolume(0.7);
 
 
     for (int i = 0; i < p.size(); i++)
@@ -211,50 +175,15 @@ for (int x = -1  ; x <= 1; x+=2)
 
 
         cam.end();
-
-//helper for the  audio bands
-
-    ofPushStyle();
-       ofSetColor(ofColor::red);
-       ofFill();
-        float width = (float)(5*128)/nBandsToGet;
-        for (int i = 0; i < nBandsToGet; i++)
-        {
-            ofDrawRectangle(65+i*width,ofGetHeight()-20,width,-(fftSmoothed[i]* 200));
-        }
-        
-
-    //    for (int j= 0; j < bands; j++)
-    //    {
-    //         for (int i = 0; i < bands; i++)
-    //         {
-    //             ofDrawRectangle(0,10 + i* 20,fft[i]* 1000,10);
-    //         }
-    //    }   
-     ofPopStyle();
-
-       
+    
     fbo.end();
 
 }
 //--------------------------------------------------------------
 void ofApp::draw(){
-   scene();
-    bnt.draw();
-        //findMax();
-   fbo.draw(0,0);
-  
-    if (state ==true)
-    {
-        ofDrawBitmapString(ofToString(volume),ofGetWidth()-65,ofGetHeight()-20);
-    }
-    else
-    {
-        ofDrawBitmapString("volume "+ofToString(volume),ofGetWidth()-95,ofGetHeight()-20);
-    }
-    
-    
-
+    scene();
+    ui.show();
+    fbo.draw(0,0);
 }
 
 //--------------------------------------------------------------
@@ -265,87 +194,51 @@ void ofApp::keyPressed(int key){
     }
     if (key == OF_KEY_UP)
     {
-       volume++;
+      // volume++;
     }
     if (key == OF_KEY_DOWN)
     {
-       volume--;
+       //volume--;
     }
 
     
-    if (key =='p')
-    {
+    // if (key =='p')
+    // {
         
-        if (song.isLoaded() ==false)
-        {
-            ofLog()<<"Load something first ";
-            state = true;
+    //     if (song.isLoaded() ==false)
+    //     {
+    //         ofLog()<<"Load something first ";
+    //        ui.state = true;
             
-        }else{
-            song.play();
-        }
+    //     }else{
+    //         song.play();
+    //     }
         
-    }
-        if (key =='0')
-    {
-        song.stop();
-    }
-    if (key =='o')
-    {
-        ofFileDialogResult music = ofSystemLoadDialog("load a song");
-        if (music.bSuccess)
-        {   
-             ofLog()<<"file selected";
-             state = true;
-            loadFile(music);
-        }else
-        {
-            ofLog()<<"file not selected";
-            state= false;
-        }
-        
-        
-    }
-    
+    // }
+    //     if (key =='0')
+    // {
+    //     song.stop();
+    // }
     
 }
 //--------------------------------------------------------------
-void ofApp::loadFile(ofFileDialogResult data){
+//  void ofApp::loadFile(ofFileDialogResult data){
+//   ofFile file (data.getPath());
+  
+//     if(file.exists()){
+//         song.unloadSound();
+//         ofLog()<<file.getAbsolutePath();
+//         song.load(file);
+//     }
+//     if(song.isLoaded()){
+//         ui.state = true;
+//         song.play();
+//     }else{
+//         ofLog()<<"at least load a file ";
+//         ui.state = false;
+//     }
 
-    ofFile file (data.getPath());
-    if(file.exists()){
-        song.unloadSound();
-        ofLog()<<file.getAbsolutePath();
-        song.load(file);
-    }
-    if(song.isLoaded()){
-        state = true;
-        song.play();
-    }else{
-        ofLog()<<"at least load a file ";
-        state = false;
-    }
-
-}
-//--------------------------------------------------------------
-void ofApp::onMouseInButton(ofVec2f & e){
-
-cout << "botton pendejo" << endl;
-
- ofFileDialogResult music = ofSystemLoadDialog("load a song");
-        if (music.bSuccess)
-        {   
-             ofLog()<<"file selected";
-            loadFile(music);
-        }else
-        {
-            ofLog()<<"file not selected";
-        }
-
-
-}
-
-
+//}
 //--------------------------------------------------------------
 void ofApp::drawCorner(ofPoint p){
     float pl = 100.0;

@@ -34,16 +34,15 @@ void Button::draw() {
         ofSetColor(ofColor::black);
         ofNoFill();
         ofDrawBitmapString(" SONG ",x-35,y+10);
-           //font.drawString(" SONG ",x-35,y+10);
      ofPopStyle();
 
 
-    ofPushMatrix();
+    // ofPushMatrix();
     ofPushStyle();
      ofSetColor(ofColor::red);
      ofDrawRectangle(x-35,y-10,50,30);
     ofPopStyle();
-    ofPopMatrix();
+    // ofPopMatrix();
    
 }
 
@@ -57,21 +56,30 @@ void Button::clear() {
 
 void Button::mouseMoved(ofMouseEventArgs& args) {}
 void Button::mouseDragged(ofMouseEventArgs& args) {}
-void Button::mousePressed(ofMouseEventArgs& args) {}
-void Button::mouseReleased(ofMouseEventArgs& args) {
-    if (inside(args.x, args.y)) {
+void Button::mousePressed(ofMouseEventArgs& args) {
+     if (inside(args.x, args.y)) {
         // if the mouse is pressed over the Button an event will be notified (broadcasted) 
         // the ButtonEvent object will contain the mouse position, so this values are accesible to any class that is listening.
         ofVec2f mousePos = ofVec2f(args.x, args.y);
+        //ofLog()<<mousePos;
+        
         ofNotifyEvent(clickedInside, mousePos, this);
-       // ofNotifyEvent(clickedInsideGlobal, mousePos);
+        //ofNotifyEvent(clickedInsideGlobal, mousePos);
     }
 }
+
+
+void Button::mouseReleased(ofMouseEventArgs& args) {
+   
+}
+
+
 void Button::mouseScrolled(ofMouseEventArgs& args) {}
 void Button::mouseEntered(ofMouseEventArgs& args) {}
 void Button::mouseExited(ofMouseEventArgs& args) {}
 
 //this function checks if the passed arguments are inside the Button.
 bool Button::inside(float _x, float _y) {
+    
     return (ofVec2f(_x, _y).distance(ofVec2f(x, y)) < radius);
 }
