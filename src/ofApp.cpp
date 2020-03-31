@@ -91,7 +91,7 @@ void ofApp::update(){
 ui.set();
 
 ofSoundUpdate();
-song.setVolume(0.7);
+//song.setVolume(0.7);
 
 
     for (int i = 0; i < p.size(); i++)
@@ -185,9 +185,16 @@ void ofApp::draw(){
     ui.show();
     fbo.draw(0,0);
 }
-
 //--------------------------------------------------------------
-void ofApp::keyPressed(int key){
+ void ofApp::keyPressed(int key){
+
+
+     if (key == 's')
+     {
+         ofLog()<<"stop song";
+        ui.m.song.stop();
+     }
+     
     if (key == 'f')
     {
         ofToggleFullscreen();
@@ -220,26 +227,10 @@ void ofApp::keyPressed(int key){
     //     song.stop();
     // }
     
-}
-//--------------------------------------------------------------
-//  void ofApp::loadFile(ofFileDialogResult data){
-//   ofFile file (data.getPath());
-  
-//     if(file.exists()){
-//         song.unloadSound();
-//         ofLog()<<file.getAbsolutePath();
-//         song.load(file);
-//     }
-//     if(song.isLoaded()){
-//         ui.state = true;
-//         song.play();
-//     }else{
-//         ofLog()<<"at least load a file ";
-//         ui.state = false;
-//     }
+ }
 
-//}
-//--------------------------------------------------------------
+
+
 void ofApp::drawCorner(ofPoint p){
     float pl = 100.0;
     ofDrawLine(p.x,p.y,p.z,p.x,p.y,p.z -sin(p.z)*pl);

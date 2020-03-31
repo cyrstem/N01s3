@@ -1,7 +1,7 @@
 #pragma once
 #include "ofMain.h"
+#include "./Audio/Music.h"
 #include "Button.h"
- extern ofSoundPlayer song;
 class UI {
    
     public:
@@ -10,7 +10,7 @@ UI(){
     btn.setup(50,ofGetWidth()/2,ofGetHeight()-35,ofColor::white);
     ofAddListener(btn.clickedInside, this, &UI::onMouseInButton);
 
-    state = false;
+    state = m._state;
 
     fft = new float[256];
         for (int i = 0; i < 128; i++)
@@ -32,11 +32,6 @@ UI(){
             
         }
     }
-
-
-
-//--------------------------------------------------------------
-
    
 //--------------------------------------------------------------
 void onMouseInButton(ofVec2f& e){
@@ -45,31 +40,14 @@ void onMouseInButton(ofVec2f& e){
     ofFileDialogResult music = ofSystemLoadDialog("load a song");
         if (music.bSuccess)
         {   
-            loadFile(music);
+          m.loadFile(music);
      
         }else
         {
             ofLog()<<"file not selected";
         }
 }
-//--------------------------------------------------------------
- void loadFile(ofFileDialogResult data){
-  ofFile file (data.getPath());
-  
-    if(file.exists()){
-        song.unloadSound();
-        ofLog()<<file.getAbsolutePath();
-        song.load(file);
-    }
-    if(song.isLoaded()){
-        state = true;
-        song.play();
-    }else{
-        ofLog()<<"at least load a file ";
-        state = false;
-    }
 
- }
 //--------------------------------------------------------------
 void show(){
 //show buttons
@@ -90,7 +68,7 @@ void show(){
 
 //active set up  volume 
 
-    if (state ==true)
+    if (m._state ==true)
     {
         ofDrawBitmapString(ofToString(volume),ofGetWidth()-65,ofGetHeight()-20);
     }
@@ -107,6 +85,7 @@ void show(){
         float volume;
         bool  state;
         Button btn;
+        Music m;
 
 //visual data from sound
 		float *fft;

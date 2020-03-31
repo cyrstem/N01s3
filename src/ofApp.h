@@ -12,7 +12,6 @@ class ofApp : public ofBaseApp{
 		void update();
 		void scene();
 		void draw();
-	    //void loadFile(ofFileDialogResult data);
 		void keyPressed(int key);
 		void drawCorner(ofPoint p);
 		//send time
@@ -42,9 +41,6 @@ class ofApp : public ofBaseApp{
 		ofLight ambient ,areaLight ,spot;
 		ofMaterial material;
 	public:
-		//sound staff 
-		ofSoundPlayer song;
-		//moving UI to UI class
 		UI ui;
 	
 
