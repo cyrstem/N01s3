@@ -191,7 +191,7 @@ void ofApp::draw(){
 
      if (key == 's')
      {
-         ofLog()<<"stop song";
+        ofLog()<<"stop song";
         ui.m.song.stop();
      }
      
