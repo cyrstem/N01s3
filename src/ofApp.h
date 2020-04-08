@@ -2,7 +2,6 @@
 
 #include "ofMain.h"
 #include "Visual/VisualSystem.h"
-//#include "Particle.h"
 #include "UI/UI.h"
 
 class ofApp : public ofBaseApp{
@@ -17,7 +16,6 @@ class ofApp : public ofBaseApp{
 
 	private:
 		UI ui;
-
 		VisualSystem v;
 	
 

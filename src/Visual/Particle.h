@@ -8,6 +8,7 @@ class Particle{
     ofPoint pos;
     glm::vec3 acc;
     ofPlanePrimitive plane;
+
     int age;
     float rotate;
     float alpha;
@@ -17,7 +18,7 @@ class Particle{
 
     Particle(){
         pos = ofPoint(ofGetWindowWidth()/2,ofGetWindowHeight()/2);
-        vel = glm::vec3(ofRandom(-5,5),ofRandom(-5,5),ofRandom(-5,5));
+        vel = glm::vec3(ofRandom(-15,5),ofRandom(-5,15),ofRandom(-5,15));
         acc = glm::vec3(0,0,0);
 
         plane.set(8,8,5,5,OF_PRIMITIVE_TRIANGLES);
@@ -39,7 +40,7 @@ class Particle{
         pos+= vel;
         //TAIL
         logs.push_front(pos);
-        while(logs.size()>4){
+        while(logs.size()>5){
             logs.pop_back();
         }
 
@@ -56,7 +57,7 @@ class Particle{
 
     void draw(){
 
-        ofSetColor(ofFloatColor(255.0,250.0,255.0),alpha);
+        ofSetColor(ofFloatColor(255.0,250.0,255.0),255);
     
         ofRotateZ(rotate);  
        

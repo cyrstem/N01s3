@@ -3,6 +3,7 @@
 //--------------------------------------------------------------
 void ofApp::setup(){
     ofSetBackgroundColor(15);
+    
     ofSetVerticalSync(true);
     ui.set();
     v.enviroment();
@@ -20,15 +21,7 @@ void ofApp::update(){
 ui.set();
 
 ofSoundUpdate();
-//song.setVolume(0.7);
 
-
-    // for (int i = 0; i < p.size(); i++)
-    //     {
-    //         p[i].update();
-    //     }
-
-    
     v.reset();
 }
 
