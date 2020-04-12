@@ -6,6 +6,13 @@ class Music {
     ofSoundPlayer song;
     bool _state;
     float volume;
+    float *fft;
+    float *ofSoundGetSpectrum;
+    int bands;
+    float decay;
+     
+
+
     //methots or functions 
 
         Music(){
@@ -14,6 +21,7 @@ class Music {
         }
     //void volume(float &volume);
     void loadFile(ofFileDialogResult data);
+
     
 
 

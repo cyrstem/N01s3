@@ -25,7 +25,7 @@ VisualSystem::VisualSystem(){
 
     //sphere.set(100,12);
 
-    ico_sphere = ofIcoSpherePrimitive(500,3);
+    ico_sphere = ofIcoSpherePrimitive(500,2);
     spinX +=10;
 
  }
@@ -73,9 +73,9 @@ void VisualSystem::enviroment(){
      // this part is for controling born rate of the particle  still neeed  to work 
     // it seems  to  work but not  for the aplication  as i  first imagine 
 
-      glm::vec3 force(ofRandom(-5.0,5.0),ofRandom(-5.1,5.0),ofRandom(-5.1,5.1));
+      //glm::vec3 force(ofRandom(-5.0,5.0),ofRandom(-5.1,5.0),ofRandom(-5.1,5.1));
 
-    // int born = ofMap(fftchosen,20,110,30,80);
+   glm::vec3 force(ofRandom(-0.005,0.005),ofRandom(-0.005,0.005),ofRandom(-0.005,0.005));
 
 
     for (int i = 0; i < vertices.size(); i++)
@@ -85,7 +85,7 @@ void VisualSystem::enviroment(){
             Particle pTemp;
             pTemp.pos = v + ofPoint(0,0,0);
             pTemp.rotate += ofRandom(0,180);
-          //  pTemp.applyForce(force);
+            pTemp.applyForce(force);
             p.push_back(pTemp);
         }
     }
@@ -118,7 +118,7 @@ for (int x = -1  ; x <= 1; x+=2)
    }
 
    // sphere.drawWireframe();
-   ico_sphere.drawVertices();
+   //ico_sphere.drawVertices();
 
 
 

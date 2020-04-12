@@ -3,6 +3,7 @@
 //--------------------------------------------------------------
 void ofApp::setup(){
     ofSetBackgroundColor(15);
+    //ofSetBackgroundColor(ofColor::white);
     
     ofSetVerticalSync(true);
     ui.set();
@@ -10,7 +11,6 @@ void ofApp::setup(){
 //     time = ofGetElapsedTimeMillis();
 
    ofEnableAntiAliasing();
-   //ofEnableArbTex();
    ofEnableSmoothing();
    ofEnableDepthTest();
 
