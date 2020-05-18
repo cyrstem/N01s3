@@ -23,7 +23,7 @@ VisualSystem::VisualSystem(){
     cam.setPosition(glm::vec3(0,0,2200));
 
 
-    //sphere.set(100,12);
+    //sphere.set(00,12);
 
     ico_sphere = ofIcoSpherePrimitive(500,2);
     spinX +=10;
@@ -85,7 +85,7 @@ void VisualSystem::enviroment(){
             Particle pTemp;
             pTemp.pos = v + ofPoint(0,0,0);
             pTemp.rotate += ofRandom(0,180);
-            pTemp.applyForce(force);
+           // pTemp.applyForce(force);
             p.push_back(pTemp);
         }
     }
@@ -119,6 +119,10 @@ for (int x = -1  ; x <= 1; x+=2)
 
    // sphere.drawWireframe();
    //ico_sphere.drawVertices();
+   //ico_sphere.setPosition(100,0,0);
+   //ico_sphere.setPosition(ofGetMouseX(),ofGetMouseY(),0);
+//    sphere.drawWireframe();
+//    sphere.setPosition(ofGetMouseX(),ofGetMouseY(),0);
 
 
 

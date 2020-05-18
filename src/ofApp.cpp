@@ -4,7 +4,6 @@
 void ofApp::setup(){
     ofSetBackgroundColor(15);
     ofSetVerticalSync(true);
-    ui.set();
     v.enviroment();
    ofEnableAntiAliasing();
    ofEnableSmoothing();
@@ -14,18 +13,20 @@ void ofApp::setup(){
 //--------------------------------------------------------------
 void ofApp::update(){
 
-ui.set();
-
-ofSoundUpdate();
-
+    ui.m.setAudio();
+    ofSoundUpdate();
     v.reset();
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-
+    
     ui.show();
+    //only to show audio input 
+    ui.m.utilDraw();
     v.show();
+    
+  
 
 }
 //--------------------------------------------------------------

@@ -19,7 +19,7 @@ public:
 
 void drawCorner(ofPoint p);
         //variables  
-        //ofSpherePrimitive sphere;
+       // ofSpherePrimitive sphere;
         ofIcoSpherePrimitive ico_sphere;
 
 

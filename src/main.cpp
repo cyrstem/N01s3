@@ -14,7 +14,7 @@ int main( ){
 	ofGLFWWindowSettings settings;
 	settings.setGLVersion(3,3);
 	settings.setSize(1200,800);
-	settings.decorated= false;
+	settings.decorated= false; //removes windows icons 
 	settings.setPosition(glm::vec2(380,100));
 	 ofCreateWindow(settings);
 

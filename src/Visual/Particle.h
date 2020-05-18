@@ -17,7 +17,7 @@ class Particle{
 
 
     Particle(){
-        pos = ofPoint(ofGetWindowWidth()/2,ofGetWindowHeight()/2);
+        pos = ofPoint(ofGetWindowWidth()/2,ofGetWindowHeight()/2, 100);
         vel = glm::vec3(ofRandom(-5,5),ofRandom(-5,5),ofRandom(-5,5));
         acc = glm::vec3(0,0,0);
 
@@ -40,7 +40,7 @@ class Particle{
         pos+= vel;
         //TAIL
         logs.push_front(pos);
-        while(logs.size()>10){
+        while(logs.size()>20){
             logs.pop_back();
         }
 
