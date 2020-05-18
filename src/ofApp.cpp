@@ -3,13 +3,9 @@
 //--------------------------------------------------------------
 void ofApp::setup(){
     ofSetBackgroundColor(15);
-    //ofSetBackgroundColor(ofColor::white);
-    
     ofSetVerticalSync(true);
     ui.set();
     v.enviroment();
-//     time = ofGetElapsedTimeMillis();
-
    ofEnableAntiAliasing();
    ofEnableSmoothing();
    ofEnableDepthTest();
@@ -48,7 +44,8 @@ void ofApp::draw(){
     }
     if (key == OF_KEY_UP)
     {
-      // volume++;
+      //song.getVolume();
+       //volume = song.getVolume()+1;
     }
     if (key == OF_KEY_DOWN)
     {
